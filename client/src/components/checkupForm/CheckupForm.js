@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Select from "react-select";
+const axios = require("axios");
+
 // import { colourOptions } from "../data";
 
 class CheckupForm extends Component {
@@ -23,66 +25,71 @@ class CheckupForm extends Component {
     this.setState({
       [e.target.id]: e.target.value,
     });
-    console.log(e.target.id, e.target.value);
+    // console.log(e.target.id, e.target.value);
   };
 
   handleChangeSelectSymptom = (selectedOptions) => {
     this.setState({
       symptomsCount: selectedOptions ? selectedOptions.length : 0,
     });
-    console.log(selectedOptions ? selectedOptions.length : 0);
+    // console.log(selectedOptions ? selectedOptions.length : 0);
   };
   handleChangeSelectCondition = (selectedOptions) => {
     this.setState({
       conditionsCount: selectedOptions ? selectedOptions.length : 0,
     });
-    console.log(selectedOptions ? selectedOptions.length : 0);
+    // console.log(selectedOptions ? selectedOptions.length : 0);
   };
   handleToggleChange1 = (e) => {
     this.setState({
       [e.target.id]: !this.state.intTravel,
     });
-    console.log(this.state.intTravel);
+    // console.log(this.state.intTravel);
   };
   handleToggleChange2 = (e) => {
     this.setState({
       [e.target.id]: !this.state.hotspot,
     });
-    console.log(this.state.hotspot);
+    // console.log(this.state.hotspot);
   };
   handleToggleChange3 = (e) => {
     this.setState({
       [e.target.id]: !this.state.nearPatient,
     });
-    console.log(this.state.nearPatient);
+    // console.log(this.state.nearPatient);
   };
   handleToggleChange4 = (e) => {
     this.setState({
       [e.target.id]: !this.state.liveFacility,
     });
-    console.log(this.state.liveFacility);
+    // console.log(this.state.liveFacility);
   };
   handleToggleChange5 = (e) => {
     this.setState({
       [e.target.id]: !this.state.carAccess,
     });
-    console.log(this.state.carAccess);
+    // console.log(this.state.carAccess);
   };
   handleSubmit = (e) => {
     e.preventDefault();
     var finalScore1 = this.CalcPoints(
-      this.state.conditionsCount,
+      this.state.conditionsCount || 0,
       this.state.intTravel,
       this.state.hotspot,
       this.state.nearPatient,
       this.state.liveFacility,
       this.state.carAccess,
-      this.state.symptomsCount,
+      this.state.symptomsCount || 0,
       this.state.fingerResult,
       this.state.xrayResult
     );
     this.setState({ finalScore: finalScore1 });
-    console.log(finalScore1);
+    // console.log(finalScore1);
+    axios
+      .post("/api/reports/add", { score: finalScore1 })
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+    this.props.history.push("/dashboard/reports");
   };
   CalcPoints = (
     preExist,
