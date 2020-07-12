@@ -3,28 +3,18 @@ let Report = require("../../models/Report");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  //   Report.find({ user: req.user.id })
   Report.find()
+    // Report.find({ user: req.user.id })
     .then((reports) => res.json(reports))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.post("/add", (req, res) => {
-  //   req.body.user = req.user.id;
+  // req.body.user = req.user.id;
+
   const reportData = {
-    age: req.body.age,
-    gender: req.body.gender,
-    postalCode: req.body.postalCode,
-    existingConditions: req.body.existingConditions,
-    intTravel: req.body.intTravel,
-    hotspotZone: req.body.hotspotZone,
-    aroundCovidPatient: req.body.aroundCovidPatient,
-    liveFacility: req.body.liveFacility,
-    carAccess: req.body.carAccess,
-    symptoms: req.body.symptoms,
-    videoResult: req.body.videoResult,
-    xrayResult: req.body.xrayResult,
-    user: req.body.user,
+    score: req.body.score,
+    user: "5f09d27f5a02b01862e29470",
     createdAt: req.body.createdAt,
   };
   const newReport = new Report(reportData);
